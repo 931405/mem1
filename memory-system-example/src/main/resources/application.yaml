@@ -1,0 +1,58 @@
+spring:
+  application:
+    name: memory-system-example
+  jackson:
+    serialization:
+      indent-output: true
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: INFO
+    com.memosystem: DEBUG
+  pattern:
+    console: "%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n"
+
+# Springdoc OpenAPI Swagger 配置
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+    operations-sorter: method
+    tags-sorter: alpha
+  show-actuator: false
+
+# LLM 配置
+llm:
+  api-key: ${LLM_API_KEY:sk-HmCbA0klDAA9po6o210b9a033cF0420eAf2585B9B87d6740}                                        # 通过环境变量配置（必填）
+  api-url: ${LLM_API_URL:https://one-api.maas.com.cn/v1}               # LLM API 服务地址
+  default-model: ${LLM_MODEL:deepseek-v3-2-251201}                       # 默认模型（用于普通AI对话）
+  memory-extraction-model: ${LLM_MODEL:deepseek-v3-2-251201}             # 记忆抽取模型
+  decision-model: ${LLM_MODEL:deepseek-v3-2-251201}                      # 决策模型（记忆更新决策）
+  global-memory-model: ${LLM_MODEL:deepseek-v3-2-251201}                 # 全局摘要优化模型
+  connect-timeout: 10                                             # 连接超时（秒）
+  api-timeout: 30                                                 # API 调用超时（秒）
+  chat-temperature: 0.7                                           # 聊天温度（0.0-1.0，越低越确定）
+  memory-extraction-temperature: 0.0                              # 记忆提取温度（推荐较低以保证一致性）
+  decision-temperature: 0.0                                       # 决策温度（推荐0以保证决策一致性）
+  max-tokens: 2000                                                # 最大 token 数
+
+# 记忆系统配置
+memory:
+  conversation-search-top-k: 3        # 对话服务检索记忆数量
+  update-search-top-k: 5              # 记忆更新检索记忆数量
+  db-path: ./qdrant                   # 向量数据库路径
+  collections-dir: collections        # 集合目录名
+  collection-name: memories           # 记忆集合名称
+  api:
+    prefix: /api/conversation         # API 路径前缀（可自定义）
+  thread-pool:
+    core-size: 5                      # 核心线程数
+    max-size: 10                      # 最大线程数
+    keep-alive-seconds: 60            # 线程空闲时间（秒）
+    queue-capacity: 100               # 任务队列大小
+  short-term-memory-size: 5        # 短期记忆保留的对话轮数
