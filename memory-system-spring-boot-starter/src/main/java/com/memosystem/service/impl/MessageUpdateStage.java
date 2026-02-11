@@ -1,6 +1,8 @@
 package com.memosystem.service.impl;
 
 import com.memosystem.adapter.llm.LLMClient;
+import com.memosystem.vo.LLMResponseVO;
+import com.memosystem.vo.TokenUsageVO;
 import com.memosystem.adapter.storage.QdrantLocalClient;
 import com.memosystem.config.MemorySystemProperties;
 import com.memosystem.config.MemoryPrompts;
@@ -62,13 +64,21 @@ public class MessageUpdateStage {
      * 处理单个候选记忆，用于并行处理
      */
     public void processSingleCandidate(String sessionId, CandidateMemory candidateMemory) {
+        processSingleCandidateWithUsage(sessionId, candidateMemory);
+    }
+
+    /**
+     * 处理单个候选记忆，返回 token 用量统计
+     */
+    public TokenUsageVO processSingleCandidateWithUsage(String sessionId, CandidateMemory candidateMemory) {
         if (candidateMemory == null) {
             log.warn("候选记忆为空");
-            return;
+            return new TokenUsageVO(0, 0, 0);
         }
         try {
-            processCandidate(sessionId, candidateMemory);
+            TokenUsageVO tokenUsage = processCandidate(sessionId, candidateMemory);
             log.debug("候选记忆处理成功: {}", candidateMemory.getFact());
+            return tokenUsage;
         } catch (Exception e) {
             log.error("处理候选记忆异常: {}", candidateMemory.getFact(), e);
             throw new RuntimeException("处理候选记忆失败: " + e.getMessage(), e);
@@ -82,8 +92,9 @@ public class MessageUpdateStage {
      * [步骤5] 构建决策提示
      * [步骤6] LLM决策
      * [步骤7] 执行操作
+     * @return token 用量统计，如果没有LLM调用则返回 0
      */
-    private void processCandidate(String sessionId, CandidateMemory candidateMemory) {
+    private TokenUsageVO processCandidate(String sessionId, CandidateMemory candidateMemory) {
         log.debug("步骤1: 生成候选记忆的向量表示 - 事实: {}", candidateMemory.getFact());
 
         // 步骤1：获取候选记忆的向量表示
@@ -104,19 +115,28 @@ public class MessageUpdateStage {
         // 步骤4：调用LLM进行决策（带容错处理）
         log.debug("步骤4: 调用LLM进行决策");
         String action;
+        TokenUsageVO tokenUsage = null;
         try {
-            String llmDecision = llmClient.chat(List.of(decisionPrompt));
-            action = parseLLMDecision(llmDecision);
+            LLMResponseVO llmResponse = llmClient.chatWithUsage(List.of(decisionPrompt));
+            tokenUsage = llmResponse.getTokenUsage();
+            log.info("LLM决策 token 用量: prompt={}, completion={}, total={}",
+                    tokenUsage.getPromptTokens(),
+                    tokenUsage.getCompletionTokens(),
+                    tokenUsage.getTotalTokens());
+            action = parseLLMDecision(llmResponse.getContent());
             log.debug("LLM决策完成，结果: {}", action);
         } catch (Exception e) {
             log.warn("LLM决策调用失败，使用备选策略: {}", e.getMessage());
             action = makeDecisionByFallback(candidateMemory, similarMemories);
+            tokenUsage = new TokenUsageVO(0, 0, 0);
             log.debug("备选策略决策完成，结果: {}", action);
         }
 
         // 步骤5：执行操作
         log.debug("步骤5: 执行数据库操作 - {}", action);
         executeAction(sessionId, action, candidateMemory, candidateEmbedding, similarMemories);
+        
+        return tokenUsage;
     }
 
     /**

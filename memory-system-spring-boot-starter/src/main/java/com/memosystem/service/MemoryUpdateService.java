@@ -1,6 +1,7 @@
 package com.memosystem.service;
 
 import com.memosystem.core.memory.CandidateMemory;
+import com.memosystem.vo.TokenUsageVO;
 
 import java.util.List;
 
@@ -16,6 +17,14 @@ public interface MemoryUpdateService {
      * @param candidateMemories 候选记忆列表
      */
     void updateMemories(String sessionId, List<CandidateMemory> candidateMemories);
+
+    /**
+     * 根据候选记忆列表更新记忆库，同时返回 token 用量统计
+     * @param sessionId 会话 ID
+     * @param candidateMemories 候选记忆列表
+     * @return 每次 LLM 决策调用的 token 用量列表
+     */
+    List<TokenUsageVO> updateMemoriesWithUsage(String sessionId, List<CandidateMemory> candidateMemories);
 
     /**
      * 添加新的记忆到记忆库

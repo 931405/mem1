@@ -5,6 +5,11 @@ import com.memosystem.common.model.CommonFileRepository;
 import com.memosystem.config.MemoryPrompts;
 import com.memosystem.core.summary.GlobalSummaryEntry;
 import com.memosystem.service.GlobalSummaryService;
+import com.memosystem.vo.LLMResponseVO;
+import com.memosystem.vo.TokenUsageVO;
+
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -31,10 +36,15 @@ public class GlobalSummaryServiceImpl implements GlobalSummaryService {
 
     @Override
     public void updateGlobalSummary(String sessionId, String userMessage, String aiResponse) {
+        updateGlobalSummaryWithUsage(sessionId, userMessage, aiResponse);
+    }
+
+    @Override
+    public TokenUsageVO updateGlobalSummaryWithUsage(String sessionId, String userMessage, String aiResponse) {
 
         if (userMessage.isEmpty() && aiResponse.isEmpty()) {
             log.debug("没有新的消息对，跳过摘要更新");
-            return;
+            return new TokenUsageVO(0, 0, 0);
         }
         String currentSummary = getCurrentSummary(sessionId);
         try {
@@ -48,18 +58,27 @@ public class GlobalSummaryServiceImpl implements GlobalSummaryService {
             log.debug("调用 LLM 更新全局摘要");
 
             // 更新摘要
-            this.currentSummary = llmClient.generateResponse(updatePrompt);
+            List<String> messages = new ArrayList<>();
+            messages.add(updatePrompt);
+            LLMResponseVO response = llmClient.chatWithUsage(messages);
+            log.info("全局摘要更新 token 用量: prompt={}, completion={}, total={}",
+                    response.getTokenUsage().getPromptTokens(),
+                    response.getTokenUsage().getCompletionTokens(),
+                    response.getTokenUsage().getTotalTokens());
+            this.currentSummary = response.getContent();
             this.messageCount++;
 
             // 报错更新后的摘要到持久化存储
             GlobalSummaryEntry summaryEntry = new GlobalSummaryEntry(sessionId, this.currentSummary);
             CommonFileRepository.save("global_summary.json", summaryEntry);
             log.debug("全局摘要更新完成，交互次数：{}", messageCount);
+            return response.getTokenUsage();
 
         } catch (Exception e) {
             log.warn("使用备选策略更新全局摘要：{}", e.getMessage());
             // 备选策略：简单追加新的对话
             appendToSummary(sessionId, userMessage, aiResponse);
+            return new TokenUsageVO(0, 0, 0);
         }
     }
 

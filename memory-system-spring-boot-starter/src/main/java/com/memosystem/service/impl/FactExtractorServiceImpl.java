@@ -4,6 +4,7 @@ import com.memosystem.adapter.llm.LLMClient;
 import com.memosystem.config.MemoryPrompts;
 import com.memosystem.core.memory.CandidateMemory;
 import com.memosystem.service.FactExtractorService;
+import com.memosystem.vo.MemoryExtractionResultVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -47,6 +48,19 @@ public class FactExtractorServiceImpl implements FactExtractorService {
             String userMessage,
             String aiResponse,
             String model) {
+        return extractCandidateMemoriesWithUsage(globalSummary, recentMemories, userMessage, aiResponse)
+                .getCandidateMemories();
+    }
+
+    /**
+     * 抽取候选记忆，同时返回 token 用量统计
+     */
+    @Override
+    public MemoryExtractionResultVO extractCandidateMemoriesWithUsage(
+            String globalSummary,
+            String recentMemories,
+            String userMessage,
+            String aiResponse) {
 
         log.debug("抽取候选记忆");
 
@@ -58,21 +72,26 @@ public class FactExtractorServiceImpl implements FactExtractorService {
                     userMessage,
                     aiResponse);
 
-            // 调用 LLM 进行抽取
-            List<CandidateMemory> candidates = memoryLLMClient.formCandidateMemories(extractionPrompt);
+            // 调用 LLM 进行抽取（带 token 统计）
+            MemoryExtractionResultVO extractionResult = memoryLLMClient.formCandidateMemoriesWithUsage(extractionPrompt);
+            log.info("候选记忆提取 token 用量: prompt={}, completion={}, total={}",
+                    extractionResult.getTokenUsage().getPromptTokens(),
+                    extractionResult.getTokenUsage().getCompletionTokens(),
+                    extractionResult.getTokenUsage().getTotalTokens());
 
+            List<CandidateMemory> candidates = extractionResult.getCandidateMemories();
             log.debug("抽取完成，得到 {} 个候选记忆", candidates.size());
-            return candidates;
+            return extractionResult;
 
         } catch (com.memosystem.common.exception.LLMClientException e) {
             log.error("LLM 调用失败: {}", e.getMessage(), e);
-            return new ArrayList<>();
+            return new MemoryExtractionResultVO(new ArrayList<>(), new com.memosystem.vo.TokenUsageVO(0, 0, 0));
         } catch (com.memosystem.common.exception.JsonParseException e) {
             log.error("解析记忆提取结果失败: {}", e.getMessage(), e);
-            return new ArrayList<>();
+            return new MemoryExtractionResultVO(new ArrayList<>(), new com.memosystem.vo.TokenUsageVO(0, 0, 0));
         } catch (RuntimeException e) {
             log.error("抽取候选记忆时出错: {}", e.getMessage(), e);
-            return new ArrayList<>();
+            return new MemoryExtractionResultVO(new ArrayList<>(), new com.memosystem.vo.TokenUsageVO(0, 0, 0));
         }
     }
 }

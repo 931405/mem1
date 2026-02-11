@@ -4,10 +4,15 @@ import com.memosystem.adapter.llm.LLMClient;
 import com.memosystem.common.model.ParsedMessage;
 import com.memosystem.config.MemoryPrompts;
 import com.memosystem.service.ConversationEnhancerService;
+import com.memosystem.vo.LLMResponseVO;
+import com.memosystem.vo.TokenUsageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 对话增强服务实现
@@ -118,14 +123,44 @@ public class ConversationEnhancerServiceImpl implements ConversationEnhancerServ
     }
 
     @Override
+    public LLMResponseVO getAIResponseWithUsage(String enhancedPrompt) {
+        log.info("调用 LLM 获取响应（含 token 统计） - 提示词长度: {}", enhancedPrompt.length());
+
+        try {
+            List<String> messages = new ArrayList<>();
+            messages.add(enhancedPrompt);
+            LLMResponseVO response = llmClient.chatWithUsage(messages);
+            log.info("LLM 响应已获取，长度: {}，token 用量: prompt={}, completion={}, total={}",
+                    response.getContent().length(),
+                    response.getTokenUsage().getPromptTokens(),
+                    response.getTokenUsage().getCompletionTokens(),
+                    response.getTokenUsage().getTotalTokens());
+            return response;
+
+        } catch (Exception e) {
+            log.error("调用 LLM 时出错", e);
+            // 如果 LLM 调用失败，返回友好的错误提示，token 用量为 0
+            return new LLMResponseVO(
+                    "抱歉，我现在无法生成响应。错误信息: " + e.getMessage(),
+                    new TokenUsageVO(0, 0, 0));
+        }
+    }
+
+    @Override
     public String getAIResponse(String enhancedPrompt, String model) {
         log.info("调用 LLM 获取响应 - 模型: {}, 提示词长度: {}", model, enhancedPrompt.length());
 
         try {
-            // 调用 LLMClient 获取响应
-            String response = llmClient.generateResponse(enhancedPrompt);
-            log.info("LLM 响应已获取，长度: {}", response.length());
-            return response;
+            // 调用 LLMClient 获取响应（带 token 统计）
+            List<String> messages = new ArrayList<>();
+            messages.add(enhancedPrompt);
+            LLMResponseVO llmResponse = llmClient.chatWithUsage(messages);
+            log.info("LLM 响应已获取，长度: {}，token 用量: prompt={}, completion={}, total={}",
+                    llmResponse.getContent().length(),
+                    llmResponse.getTokenUsage().getPromptTokens(),
+                    llmResponse.getTokenUsage().getCompletionTokens(),
+                    llmResponse.getTokenUsage().getTotalTokens());
+            return llmResponse.getContent();
 
         } catch (Exception e) {
             log.error("调用 LLM 时出错", e);

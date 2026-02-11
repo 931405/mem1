@@ -9,6 +9,10 @@ import com.memosystem.core.memory.CandidateMemory;
 import com.memosystem.core.memory.MemorySimilarity;
 import com.memosystem.core.summary.GlobalSummaryEntry;
 import com.memosystem.service.*;
+import com.memosystem.vo.LLMResponseVO;
+import com.memosystem.vo.MemoryExtractionResultVO;
+import com.memosystem.vo.TokenUsageSummaryVO;
+import com.memosystem.vo.TokenUsageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -70,6 +75,9 @@ public class ConversationServiceImpl implements ConversationService {
         log.info("========== 开始处理对话 ==========");
         log.info("用户消息: {}", userMessage);
 
+        // 创建 token 统计汇总对象
+        TokenUsageSummaryVO tokenSummary = new TokenUsageSummaryVO();
+
         try {
             Map<String, Long> timings = new java.util.LinkedHashMap<>();
             long totalStartTime = System.currentTimeMillis();
@@ -82,10 +90,12 @@ public class ConversationServiceImpl implements ConversationService {
             timings.put("阶段1-构建提示词", phase1Duration);
             log.info("提示词构建完成，长度: {} 字符，耗时: {} ms", enhancedPrompt.length(), phase1Duration);
 
-            // 阶段 2: 获取 AI 响应
+            // 阶段 2: 获取 AI 响应（含 token 统计）
             log.info("【阶段 2】调用 LLM 获取 AI 响应...");
             long phase2Start = System.currentTimeMillis();
-            String aiResponse = conversationEnhancerService.getAIResponse(enhancedPrompt);
+            LLMResponseVO llmResponse = conversationEnhancerService.getAIResponseWithUsage(enhancedPrompt);
+            String aiResponse = llmResponse.getContent();
+            tokenSummary.addUsage("AI响应生成", llmResponse.getTokenUsage());
             long phase2Duration = System.currentTimeMillis() - phase2Start;
             timings.put("阶段2-LLM响应", phase2Duration);
             log.info("AI 响应已获取，长度: {} 字符，耗时: {} ms", aiResponse.length(), phase2Duration);
@@ -93,7 +103,7 @@ public class ConversationServiceImpl implements ConversationService {
             // 阶段 3: 更新系统上下文（记忆抽取 + 全局摘要更新）
             log.info("【阶段 3】更新系统上下文...");
             long phase3Start = System.currentTimeMillis();
-            updateSystemContext(sessionId, userMessage, aiResponse);
+            updateSystemContext(sessionId, userMessage, aiResponse, tokenSummary);
             long phase3Duration = System.currentTimeMillis() - phase3Start;
             timings.put("阶段3-更新上下文", phase3Duration);
             log.info("系统上下文已更新，耗时: {} ms", phase3Duration);
@@ -103,6 +113,8 @@ public class ConversationServiceImpl implements ConversationService {
             Map<String, Object> result = new java.util.HashMap<>();
             result.put("userMessage", userMessage);
             result.put("aiResponse", aiResponse);
+            result.put("tokenUsage", llmResponse.getTokenUsage()); // 单次AI响应的token
+            result.put("tokenSummary", tokenSummary); // 整个流程的token汇总
             result.put("timestamp", System.currentTimeMillis());
             result.put("timings", timings);
             result.put("totalDuration", totalDuration);
@@ -110,6 +122,18 @@ public class ConversationServiceImpl implements ConversationService {
             log.info("========== 对话处理完成 ==========");
             timings.forEach((step, duration) -> log.info("  {}: {} ms", step, duration));
             log.info("  总耗时: {} ms", totalDuration);
+            log.info("========== Token 用量汇总 ==========");
+            log.info("  LLM 调用次数: {}", tokenSummary.getCallCount());
+            log.info("  总 prompt tokens: {}", tokenSummary.getTotalPromptTokens());
+            log.info("  总 completion tokens: {}", tokenSummary.getTotalCompletionTokens());
+            log.info("  总 tokens: {}", tokenSummary.getTotalTokens());
+            tokenSummary.getDetails().forEach(detail ->
+                log.info("    {} - prompt: {}, completion: {}, total: {}",
+                    detail.getStage(),
+                    detail.getUsage().getPromptTokens(),
+                    detail.getUsage().getCompletionTokens(),
+                    detail.getUsage().getTotalTokens())
+            );
 
             return result;
 
@@ -204,6 +228,20 @@ public class ConversationServiceImpl implements ConversationService {
      */
     @Override
     public Result<String> updateSystemContext(String sessionId, String userMessage, String aiResponse) {
+        return updateSystemContext(sessionId, userMessage, aiResponse, null);
+    }
+
+    /**
+     * 更新系统上下文信息（带 token 统计）
+     * 
+     * @param sessionId     会话ID
+     * @param userMessage   用户消息
+     * @param aiResponse    AI回复内容
+     * @param tokenSummary  token 统计汇总对象
+     * @return
+     */
+    private Result<String> updateSystemContext(String sessionId, String userMessage, String aiResponse,
+            TokenUsageSummaryVO tokenSummary) {
         try {
             log.debug("【开始更新系统上下文】");
             log.info("更新系统上下文 - sessionId: {}, 用户消息: {}, AI响应: {}",
@@ -239,34 +277,47 @@ public class ConversationServiceImpl implements ConversationService {
             log.debug("【阶段 2】并行处理：抽取候选记忆 && 更新全局摘要...");
             long phase2Start = System.currentTimeMillis();
 
-            java.util.concurrent.CompletableFuture<List<CandidateMemory>> extractTask = java.util.concurrent.CompletableFuture
+            CompletableFuture<MemoryExtractionResultVO> extractTask = CompletableFuture
                     .supplyAsync(() -> {
                         log.debug("【步骤 7】从对话中抽取候选记忆...");
                         long step7Start = System.currentTimeMillis();
-                        List<CandidateMemory> extracted = factExtractorService.extractCandidateMemories(
+                        MemoryExtractionResultVO extractionResult = factExtractorService.extractCandidateMemoriesWithUsage(
                                 globalSummary, recentMemories, userMessage, aiResponse);
+                        if (tokenSummary != null) {
+                            tokenSummary.addUsage("候选记忆提取", extractionResult.getTokenUsage());
+                        }
                         long step7Duration = System.currentTimeMillis() - step7Start;
                         timings.put("步骤7-抽取候选记忆", step7Duration);
-                        return extracted;
+                        return extractionResult;
                     }, executorService);
 
-            java.util.concurrent.CompletableFuture<Void> updateSummaryTask = java.util.concurrent.CompletableFuture
-                    .runAsync(() -> {
+            CompletableFuture<TokenUsageVO> updateSummaryTask = CompletableFuture
+                    .supplyAsync(() -> {
                         log.debug("【步骤 9】更新全局摘要...");
                         long step9Start = System.currentTimeMillis();
-                        globalSummaryService.updateGlobalSummary(sessionId, userMessage, aiResponse);
+                        TokenUsageVO summaryTokens = globalSummaryService.updateGlobalSummaryWithUsage(sessionId, userMessage, aiResponse);
+                        if (tokenSummary != null && summaryTokens != null) {
+                            tokenSummary.addUsage("全局摘要更新", summaryTokens);
+                        }
                         long step9Duration = System.currentTimeMillis() - step9Start;
                         timings.put("步骤9-更新全局摘要", step9Duration);
+                        return summaryTokens;
                     }, executorService);
 
-            List<CandidateMemory> extractedMemories = extractTask.join();
+            MemoryExtractionResultVO extractionResult = extractTask.join();
+            List<CandidateMemory> extractedMemories = extractionResult.getCandidateMemories();
             long phase2Duration = System.currentTimeMillis() - phase2Start;
             timings.put("阶段2-并行处理", phase2Duration);
 
-            // 步骤 8: 更新记忆库
+            // 步骤 8: 更新记忆库（包含LLM决策调用）
             log.debug("【步骤 8】更新记忆库...");
             long step8Start = System.currentTimeMillis();
-            memoryUpdateService.updateMemories(sessionId, extractedMemories);
+            List<TokenUsageVO> updateTokens = memoryUpdateService.updateMemoriesWithUsage(sessionId, extractedMemories);
+            if (tokenSummary != null && updateTokens != null) {
+                for (int i = 0; i < updateTokens.size(); i++) {
+                    tokenSummary.addUsage("记忆决策-" + (i + 1), updateTokens.get(i));
+                }
+            }
             long step8Duration = System.currentTimeMillis() - step8Start;
             timings.put("步骤8-更新记忆库", step8Duration);
 

@@ -3,6 +3,9 @@ package com.memosystem.adapter.llm;
 import com.memosystem.common.exception.LLMClientException;
 import com.memosystem.common.exception.JsonParseException;
 import com.memosystem.core.memory.CandidateMemory;
+import com.memosystem.vo.LLMResponseVO;
+import com.memosystem.vo.MemoryExtractionResultVO;
+import com.memosystem.vo.TokenUsageVO;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -71,6 +74,14 @@ public class LLMClient implements LLMClientInterface {
      */
     @Override
     public List<CandidateMemory> formCandidateMemories(String prompt) {
+        return formCandidateMemoriesWithUsage(prompt).getCandidateMemories();
+    }
+
+    /**
+     * 供记忆提取阶段调用，形成候选记忆列表，同时返回 token 用量统计
+     */
+    @Override
+    public MemoryExtractionResultVO formCandidateMemoriesWithUsage(String prompt) {
         if (apiKey == null || apiKey.isEmpty()) {
             throw new LLMClientException("未配置 API Key，无法提取候选记忆");
         }
@@ -112,8 +123,22 @@ public class LLMClient implements LLMClientInterface {
 
             log.debug("LLM 返回的原始内容：{}", content);
 
+            // 解析 token 用量
+            TokenUsageVO tokenUsage = new TokenUsageVO();
+            if (jsonResp.has("usage")) {
+                JSONObject usage = jsonResp.getJSONObject("usage");
+                tokenUsage.setPromptTokens(usage.optInt("prompt_tokens", 0));
+                tokenUsage.setCompletionTokens(usage.optInt("completion_tokens", 0));
+                tokenUsage.setTotalTokens(usage.optInt("total_tokens", 0));
+                log.info("记忆提取 token 用量: prompt={}, completion={}, total={}",
+                        tokenUsage.getPromptTokens(),
+                        tokenUsage.getCompletionTokens(),
+                        tokenUsage.getTotalTokens());
+            }
+
             // 尝试解析 JSON 数组
-            return parseMemoriesFromContent(content);
+            List<CandidateMemory> memories = parseMemoriesFromContent(content);
+            return new MemoryExtractionResultVO(memories, tokenUsage);
 
         } catch (IOException | InterruptedException e) {
             throw new LLMClientException("调用 LLM API 异常：" + e.getMessage(), e);
@@ -320,6 +345,14 @@ public class LLMClient implements LLMClientInterface {
      */
     @Override
     public String chat(List<String> messages) {
+        return chatWithUsage(messages).getContent();
+    }
+
+    /**
+     * 通用的 API 调用方法，同时返回 token 用量统计
+     */
+    @Override
+    public LLMResponseVO chatWithUsage(List<String> messages) {
         if (apiKey == null || apiKey.isEmpty()) {
             throw new LLMClientException("API 密钥未配置，无法调用 LLM");
         }
@@ -348,10 +381,24 @@ public class LLMClient implements LLMClientInterface {
                 String result = new String(response.getEntity().getContent().readAllBytes());
                 try {
                     JsonObject jsonResponse = gson.fromJson(result, JsonObject.class);
-                    return jsonResponse.getAsJsonArray("choices")
+                    String content = jsonResponse.getAsJsonArray("choices")
                             .get(0).getAsJsonObject()
                             .getAsJsonObject("message")
                             .get("content").getAsString();
+
+                    // 解析 token 用量
+                    TokenUsageVO tokenUsage = new TokenUsageVO();
+                    if (jsonResponse.has("usage")) {
+                        JsonObject usage = jsonResponse.getAsJsonObject("usage");
+                        tokenUsage.setPromptTokens(
+                                usage.has("prompt_tokens") ? usage.get("prompt_tokens").getAsInt() : 0);
+                        tokenUsage.setCompletionTokens(
+                                usage.has("completion_tokens") ? usage.get("completion_tokens").getAsInt() : 0);
+                        tokenUsage.setTotalTokens(
+                                usage.has("total_tokens") ? usage.get("total_tokens").getAsInt() : 0);
+                    }
+
+                    return new LLMResponseVO(content, tokenUsage);
                 } catch (com.google.gson.JsonSyntaxException e) {
                     throw new JsonParseException("解析 API 响应失败：" + e.getMessage(), e);
                 }

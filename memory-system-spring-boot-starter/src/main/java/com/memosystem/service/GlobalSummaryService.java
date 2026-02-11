@@ -1,5 +1,7 @@
 package com.memosystem.service;
 
+import com.memosystem.vo.TokenUsageVO;
+
 /**
  * 全局摘要服务接口
  * 负责生成和维护用户的全局记忆摘要
@@ -24,6 +26,12 @@ public interface GlobalSummaryService {
      * 基于最后的消息对和 PROCEDURAL_MEMORY_SYSTEM_PROMPT 调用 LLM 进行更新
      */
     void updateGlobalSummary(String sessionId, String userMessage, String aiResponse);
+
+    /**
+     * 更新全局摘要，同时返回 token 用量统计
+     * @return token 用量统计
+     */
+    TokenUsageVO updateGlobalSummaryWithUsage(String sessionId, String userMessage, String aiResponse);
 
     /**
      * 获取当前的全局摘要

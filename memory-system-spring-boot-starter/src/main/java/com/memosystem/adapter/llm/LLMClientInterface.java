@@ -1,6 +1,8 @@
 package com.memosystem.adapter.llm;
 
 import com.memosystem.core.memory.CandidateMemory;
+import com.memosystem.vo.LLMResponseVO;
+import com.memosystem.vo.MemoryExtractionResultVO;
 
 import java.util.List;
 
@@ -22,6 +24,15 @@ public interface LLMClientInterface {
     String chat(List<String> messages);
 
     /**
+     * 调用 LLM 进行对话，同时返回 token 用量统计
+     * 
+     * @param messages 消息列表（交替的 user/assistant 消息）
+     * @return 包含回复内容和 token 用量的 LLMResponseVO
+     * @throws RuntimeException 如果调用失败
+     */
+    LLMResponseVO chatWithUsage(List<String> messages);
+
+    /**
      * 根据用户消息生成 AI 响应
      * 
      * @param userMessage 用户消息
@@ -38,4 +49,13 @@ public interface LLMClientInterface {
      * @throws RuntimeException 如果提取失败
      */
     List<CandidateMemory> formCandidateMemories(String prompt);
+
+    /**
+     * 从提示词中提取候选记忆，同时返回 token 用量统计
+     * 
+     * @param prompt 提示词
+     * @return 包含候选记忆列表和 token 用量的 MemoryExtractionResultVO
+     * @throws RuntimeException 如果提取失败
+     */
+    MemoryExtractionResultVO formCandidateMemoriesWithUsage(String prompt);
 }

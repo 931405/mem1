@@ -5,15 +5,18 @@ import com.memosystem.core.conversation.MessagePair;
 import com.memosystem.core.memory.CandidateMemory;
 import com.memosystem.service.EmbeddingService;
 import com.memosystem.service.MemoryUpdateService;
+import com.memosystem.vo.TokenUsageVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -49,13 +52,27 @@ public class MemoryUpdateServiceImpl implements MemoryUpdateService {
      */
     @Override
     public void updateMemories(String sessionId, List<CandidateMemory> candidateMemories) {
+        updateMemoriesWithUsage(sessionId, candidateMemories);
+    }
+
+    /**
+     * 根据候选记忆列表并行更新记忆库，同时返回 token 用量统计
+     * 
+     * @param sessionId         会话ID
+     * @param candidateMemories 候选记忆列表
+     * @return 每次 LLM 决策调用的 token 用量列表
+     */
+    @Override
+    public List<TokenUsageVO> updateMemoriesWithUsage(String sessionId, List<CandidateMemory> candidateMemories) {
         if (candidateMemories == null || candidateMemories.isEmpty()) {
             log.debug("没有候选记忆需要处理");
-            return;
+            return new ArrayList<>();
         }
 
         log.debug("========== 开始并行处理 {} 个候选记忆 ==========", candidateMemories.size());
 
+        // 使用线程安全的列表收集 token 统计
+        List<TokenUsageVO> tokenUsages = new CopyOnWriteArrayList<>();
         // 使用Map记录各候选记忆的耗时
         Map<Integer, Long> timings = new LinkedHashMap<>();
         long totalStartTime = System.currentTimeMillis();
@@ -75,7 +92,10 @@ public class MemoryUpdateServiceImpl implements MemoryUpdateService {
                                         Thread.currentThread().getName(),
                                         memory.getFact());
 
-                                messageUpdateStage.processSingleCandidate(sessionId, memory);
+                                TokenUsageVO tokenUsage = messageUpdateStage.processSingleCandidateWithUsage(sessionId, memory);
+                                if (tokenUsage != null) {
+                                    tokenUsages.add(tokenUsage);
+                                }
 
                                 long candidateDuration = System.currentTimeMillis() - candidateStartTime;
                                 timings.put(index, candidateDuration);
@@ -94,8 +114,12 @@ public class MemoryUpdateServiceImpl implements MemoryUpdateService {
             CompletableFuture.allOf(tasks.toArray(new CompletableFuture[0])).join();
             long totalDuration = System.currentTimeMillis() - totalStartTime;
 
+            log.debug("========== 并行处理完成，总耗时: {}ms ==========", totalDuration);
+            return tokenUsages;
+
         } catch (Exception e) {
             log.error("并行处理候选记忆异常", e);
+            return tokenUsages;
         }
     }
 
