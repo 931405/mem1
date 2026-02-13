@@ -3,11 +3,11 @@
 
 
 <p align="center">
-  <strong>💬 让 AI 记住每一次对话</strong>
+  <strong>💬 Enable AI to Remember Every Conversation</strong>
 </p>
 
 <p align="center">
-  <strong>🔧 AI Agent 长期记忆中间件 - Java 实现</strong>
+  <strong>🔧 AI Agent Long-Term Memory Middleware - Java Implementation</strong>
 </p>
 
 <p align="center">
@@ -17,42 +17,65 @@
   <img src="https://img.shields.io/badge/license-Apache%202.0-red.svg" alt="License">
 </p>
 
-<p align="center" style="background-color: #fef3bd; padding: 8px;">
-  <strong> ⚡ 更快的速度 ✨ 更高的准确度 💰 更少的token消耗 </strong>
+<p align="center">
+  <img src="docs/images/banner-en.svg" alt="Key Advantages" width="100%" style="max-width: 800px;"/>
 </p>
 
-## 简介
+<p align="center">
+  <img src="docs/images/token-badge-en.svg" alt="Token Consumption Comparison" width="100%" style="max-width: 720px;"/>
+</p>
 
-mem1 是一个基于 **Mem0**实现的改进版记忆管理系统，能够为 AI 对话系统提供**长期记忆**、**短期记忆**与**全局摘要**能力，让 AI 记住用户偏好、历史交互和关键信息。
+## Introduction
 
-### 🔥 Research Highlights（研究亮点）
+mem1 is an improved memory management system based on **mem0**, providing **long-term memory**, **short-term memory**, and **global summary** capabilities for AI conversational systems, enabling AI to remember user preferences, interaction history, and key information.
 
-相较于其他竞品，mem1 在以下方面具备明显优势：
+### 🔥 Research Highlights
 
-- **更高的准确度**：相较于 竞品，在多轮对话记忆任务中命中率更高、可用记忆更贴合对话意图
+Compared to other competitors, mem1 has significant advantages in the following aspects:
 
-- **更快的速度 Faster**：更少的模型调用与更短的检索链路，规模化场景下延迟更低
+- **Higher Accuracy**: Compared to competitors, it achieves higher hit rates and more relevant memory in multi-turn dialogue memory tasks
 
-- **更少的token消耗**：返回更精炼的“可用记忆 + 全局摘要”，在不牺牲效果的前提下降低上下文成本
+- **Faster Speed**: Fewer model calls and shorter retrieval chains result in lower latency in large-scale scenarios
 
-### 核心特性
+- **Less Token Consumption**: Returns more refined "available memory + global summary", reducing context costs without sacrificing effectiveness
 
-- **三层记忆架构**：短期记忆（最近对话）、长期记忆（持久化事实）、全局摘要（会话概览）
-- **自动记忆抽取**：基于 LLM 自动从对话中提取关键信息
-- **智能记忆更新**：支持新增（ADD）、更新（UPDATE）、删除（DELETE）、保持（NONE）四种决策
-- **向量检索**：基于 Embedding 的语义相似度搜索
-- **Spring Boot 自动配置**：开箱即用，最小化配置
+### 📊 Performance Comparison: Token Consumption Analysis
 
-## 快速开始
+<div align="center">
+  <img src="docs/images/token-comparison-en.svg" alt="Token Consumption Comparison" width="100%"/>
+</div>
 
-### 前置要求
+**Test Scenario**: Token consumption comparison between mem1 and mem0 in multi-turn dialogues (10 turns), averaged over 5 tests
+
+#### Key Metrics
+
+| Metric | mem1 ✅ |  mem0   | Savings |
+|:------|:--------:|:-------:|:------:|
+| **Total (10 turns)** | 130,013 | 285,612 | **54.5% ↓** |
+| **Avg per turn** | 13,001 | 28,561  | **54.5% ↓** |
+| **Peak per turn** | 19,931 | 40,512  | **50.8% ↓** |
+| **Min per turn** | 8,137 | 16,528  | **50.8% ↓** |
+
+> 💡 **Conclusion**: mem1 can save approximately **50% ~ 55%** in token consumption compared to mem0, while maintaining the same memory quality, significantly reducing LLM API costs.
+
+### Core Features
+
+- **Three-Layer Memory Architecture**: Short-term memory (recent conversations), long-term memory (persisted facts), global summary (session overview)
+- **Automatic Memory Extraction**: LLM-based automatic extraction of key information from conversations
+- **Intelligent Memory Updates**: Supports four decision types - ADD, UPDATE, DELETE, NONE
+- **Vector Retrieval**: Semantic similarity search based on embeddings
+- **Spring Boot Auto-Configuration**: Out-of-the-box with minimal configuration
+
+## Quick Start
+
+### Prerequisites
 
 - Java 21
 - Maven 3.9
 
-### 安装
+### Installation
 
-在您的项目 `pom.xml` 中添加 `<repositories>` 配置：
+Add the `<repositories>` configuration to your project's `pom.xml`:
 
 **Maven:**
 
@@ -71,7 +94,7 @@ mem1 是一个基于 **Mem0**实现的改进版记忆管理系统，能够为 AI
 </repositories>
 ```
 
-在您的项目 `pom.xml` 中`<dependencies>`的添加以下依赖：
+Add the following dependencies in `<dependencies>`:
 
 **Maven:**
 
@@ -90,15 +113,15 @@ mem1 是一个基于 **Mem0**实现的改进版记忆管理系统，能够为 AI
 </dependency>
 ```
 
-**从私有仓库拉取:**
+**Pulling from Private Repository:**
 
-> **两种方式：修改已有的 settings.xml 文件，或直接使用提供的 settings.xml 文件。**
+> **Two methods: Modify existing settings.xml file, or use the provided settings.xml file directly.**
 
-**方式一**. 修改已有settings.xml文件：
+**Method 1**. Modify existing settings.xml file:
 
-**Step 1**：在 settings.xml 中新增仓库认证信息
+**Step 1**: Add repository authentication information in `settings.xml`
 
-打开 Maven 的 `settings.xml` 文件（通常位于 `~/.m2/settings.xml` 或 Maven 安装目录的 `conf/settings.xml`），在 `<servers>` 标签中添加仓库的账号密码：
+Open Maven's `settings.xml` file (usually located at `~/.m2/settings.xml` or Maven installation directory `conf/settings.xml`), and add the repository username and password in the `<servers>` tag:
 
 ```xml
 <servers>
@@ -110,11 +133,11 @@ mem1 是一个基于 **Mem0**实现的改进版记忆管理系统，能够为 AI
 </servers>
 ```
 
-> **注意**：`<id>` 必须与后续 `<repository>` 中的 `<id>` 保持一致。
+> **Note**: `<id>` must match the `<id>` in the subsequent `<repository>`.
 
-**Step 2**：在 settings.xml 中排除私有仓库的镜像代理
+**Step 2**: Exclude private repository from mirror proxy in `settings.xml`
 
-在 `settings.xml` 的 `<mirrors>` 标签中，修改 `<mirrorOf>` 配置，排除私有仓库（避免被镜像拦截）：
+In the `<mirrors>` tag of `settings.xml`, modify `<mirrorOf>` configuration to exclude the private repository (avoid being intercepted by mirrors):
 
 ```xml
 <mirrors>
@@ -122,14 +145,14 @@ mem1 是一个基于 **Mem0**实现的改进版记忆管理系统，能够为 AI
         <id>aliyun</id>
         <name>Aliyun Maven</name>
         <url>https://maven.aliyun.com/repository/public</url>
-        <mirrorOf>*,!repo-ygatm</mirrorOf>  <!-- 关键：排除 repo-ygatm -->
+        <mirrorOf>*,!repo-ygatm</mirrorOf>  <!-- Key: exclude repo-ygatm -->
     </mirror>
 </mirrors>
 ```
 
-> **说明**：`!repo-ygatm` 表示该镜像不代理 `repo-ygatm` 仓库，Maven 会直接访问原始地址。
+> **Explanation**: `!repo-ygatm` means this mirror does not proxy `repo-ygatm` repository, and Maven will directly access the original address.
 
-**方式二**. 直接使用提供的 settings.xml 文件：
+**Method 2**. Use the provided settings.xml file directly:
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -239,46 +262,46 @@ mem1 是一个基于 **Mem0**实现的改进版记忆管理系统，能够为 AI
 
 ```
 
-**配置 YAML**
+**YAML Configuration**
 
-在 `application.yaml` 中添加以下配置：
+Add the following configuration to `application.yaml`:
 
 ```yaml
-# LLM 配置
+# LLM Configuration
 llm:
-  api-key: ${LLM_API_KEY:your-api-key}                    # 通过环境变量配置（必填）
-  api-url: ${LLM_API_URL:https://api.deepseek.ai/v1}      # LLM API 服务地址
-  default-model: ${LLM_MODEL:deepseek-v3-2-251201}        # 默认模型
-  memory-extraction-model: ${LLM_MODEL:deepseek-v3-2-251201}  # 记忆抽取模型
-  decision-model: ${LLM_MODEL:deepseek-v3-2-251201}       # 决策模型
-  global-memory-model: ${LLM_MODEL:deepseek-v3-2-251201}  # 全局摘要模型
-  connect-timeout: 10                                      # 连接超时（秒）
-  api-timeout: 30                                          # API 调用超时（秒）
-  chat-temperature: 0.7                                    # 聊天温度
-  memory-extraction-temperature: 0.0                       # 记忆提取温度
-  decision-temperature: 0.0                                # 决策温度
-  max-tokens: 2000                                         # 最大 token 数
+  api-key: ${LLM_API_KEY:your-api-key}                    # Configure via environment variable (required)
+  api-url: ${LLM_API_URL:https://api.deepseek.ai/v1}      # LLM API service URL
+  default-model: ${LLM_MODEL:deepseek-v3-2-251201}        # Default model
+  memory-extraction-model: ${LLM_MODEL:deepseek-v3-2-251201}  # Memory extraction model
+  decision-model: ${LLM_MODEL:deepseek-v3-2-251201}       # Decision model
+  global-memory-model: ${LLM_MODEL:deepseek-v3-2-251201}  # Global summary model
+  connect-timeout: 10                                      # Connection timeout (seconds)
+  api-timeout: 30                                          # API call timeout (seconds)
+  chat-temperature: 0.7                                    # Chat temperature
+  memory-extraction-temperature: 0.0                       # Memory extraction temperature
+  decision-temperature: 0.0                                # Decision temperature
+  max-tokens: 2000                                         # Maximum tokens
 
-# 记忆系统配置
+# Memory System Configuration
 memory:
-  conversation-search-top-k: 3        # 对话服务检索记忆数量
-  update-search-top-k: 5              # 记忆更新检索记忆数量
-  short-term-memory-size: 10          # 短期记忆容量（对话轮数）
-  db-path: ./qdrant                   # 向量数据库路径
-  collections-dir: collections        # 集合目录名
-  collection-name: memories           # 记忆集合名称
+  conversation-search-top-k: 3        # Number of memories to retrieve for conversation
+  update-search-top-k: 5              # Number of memories to retrieve for updates
+  short-term-memory-size: 10          # Short-term memory capacity (conversation turns)
+  db-path: ./qdrant                   # Vector database path
+  collections-dir: collections        # Collections directory name
+  collection-name: memories           # Memory collection name
   api:
-    prefix: /api/conversation         # API 路径前缀
+    prefix: /api/conversation         # API path prefix
   thread-pool:
-    core-size: 5                      # 核心线程数
-    max-size: 10                      # 最大线程数
-    keep-alive-seconds: 60            # 线程空闲时间（秒）
-    queue-capacity: 100               # 任务队列大小
+    core-size: 5                      # Core thread pool size
+    max-size: 10                      # Maximum thread pool size
+    keep-alive-seconds: 60            # Thread idle time (seconds)
+    queue-capacity: 100               # Task queue size
 ```
 
-### 基本用法
+### Basic Usage
 
-在你的 Spring Boot 项目中注入 `ConversationService` 并调用：
+Inject `ConversationService` in your Spring Boot project and call it:
 
 ```java
 import com.memosystem.service.ConversationService;
@@ -292,13 +315,13 @@ public class YourChatService {
     private ConversationService conversationService;
 
     public String chat(String sessionId, String userMessage) {
-        // 1. 获取带记忆的提示词
+        // 1. Get memory-enhanced prompt
         String prompt = conversationService.getPrompt(sessionId, userMessage);
 
-        // 2. 调用你的 AI 服务
+        // 2. Call your AI service
         String aiResponse = yourAIService.chat(prompt);
 
-        // 3. 保存到记忆系统
+        // 3. Save to memory system
         Result<String> result = conversationService.updateSystemContext(
             sessionId, 
             userMessage, 
@@ -310,52 +333,52 @@ public class YourChatService {
 }
 ```
 
-## API 参考
+## API Reference
 
 ---
 
-`getPrompt` - 获取上下文记忆 
+`getPrompt` - Get Context Memory 
 
 ```java
 String prompt = conversationService.getPrompt(sessionId, userMessage);
 ```
 
-**功能说明**：
+**Description**:
 
-- 根据用户消息检索相关的长期记忆
-- 加载当前会话的短期记忆（最近对话）
-- 获取全局摘要上下文
-- 将所有记忆信息整合后返回
+- Retrieves relevant long-term memories based on user message
+- Loads short-term memory (recent conversations) for current session
+- Fetches global summary context
+- Integrates all memory information and returns
 
-**返回值**：详细的上下文记忆，可拼接其他提示词用于 LLM 调用。
+**Returns**: Detailed context memory, can be concatenated with other prompts for LLM invocation.
 
-`updateSystemContext` - 更新系统记忆
+`updateSystemContext` - Update System Memory
 
 ```java
 Result<String> result = conversationService.updateSystemContext(sessionId, userMessage, aiResponse);
 ```
 
-**功能说明**：
-- 保存当前对话到短期记忆
-- 从对话中抽取关键事实（Fact Extraction）
-- 与现有长期记忆进行对比决策（ADD/UPDATE/DELETE/NONE）
-- 更新全局摘要
+**Description**:
+- Saves current conversation to short-term memory
+- Extracts key facts from conversation (Fact Extraction)
+- Compares with existing long-term memories and makes decisions (ADD/UPDATE/DELETE/NONE)
+- Updates global summary
 
-**返回值**：`Result<String>` 对象，包含操作结果和消息。
+**Returns**: `Result<String>` object, containing operation result and message.
 
-## 项目结构
+## Project Structure
 
-> **项目详细结构**:[DETAILED_GUIDE.md](DETAILED_GUIDE.md)
+> **Detailed Project Structure**: [DETAILED_GUIDE.md](DETAILED_GUIDE.md)
 
-## 语言支持
+## Language Support
 
-- **中文**: [README.md](README.md) (本文件)
-- **English**: [README_EN.md](README_EN.md)
+- **中文**: [README.md](README.md)
+- **English**: [README_EN.md](README_EN.md) (This file)
 
-## 许可证
+## License
 
-Apache 2.0 - 详见 [LICENSE.md](LICENSE.md) 文件。
+Apache 2.0 - See [LICENSE.md](LICENSE.md) file for details.
 
-## 致谢
+## Acknowledgements
 
-本项目为源项目[Mem0 Python 实现](https://github.com/mem0ai/mem0) 的Java开发版。
+This project is a Java development version of the original [Mem0 Python Implementation](https://github.com/mem0ai/mem0).
