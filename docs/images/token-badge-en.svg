@@ -9,7 +9,7 @@
   </text>
 
   <g transform="translate(40, 110)">
-    <text x="0" y="15" font-family="monospace" font-size="14" font-weight="600" fill="#586069">Mem0 (Baseline)</text>
+    <text x="0" y="15" font-family="monospace" font-size="14" font-weight="600" fill="#586069">mem0 (Baseline)</text>
     <rect x="140" y="0" width="500" height="20" rx="4" fill="#f6f8fa"/>
     <rect x="140" y="0" width="500" height="20" rx="4" fill="#ea4a5a"/>
     <text x="650" y="15" font-family="monospace" font-size="14" font-weight="bold" fill="#ea4a5a">~286K Tokens</text>

@@ -11,7 +11,7 @@
     <packaging>pom</packaging>
 
     <name>Memory Management System</name>
-    <description>Mem0-like memory management system with extraction and update stages</description>
+    <description>mem0-like memory management system with extraction and update stages</description>
     <modules>
         <module>memory-system-core</module>
         <module>memory-system-spring-boot-starter</module>

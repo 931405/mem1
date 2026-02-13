@@ -14,7 +14,7 @@
   </defs>
 
   <!-- 标题 -->
-  <text x="450" y="30" text-anchor="middle" font-size="20" font-weight="600" fill="#1a1a1a">📊 Token 消耗对比：mem1 vs Mem0</text>
+  <text x="450" y="30" text-anchor="middle" font-size="20" font-weight="600" fill="#1a1a1a">📊 Token 消耗对比：mem1 vs mem0</text>
   <text x="450" y="52" text-anchor="middle" font-size="13" fill="#666">10轮对话平均消耗（5次测试均值）</text>
 
   <!-- 左侧：柱状图 -->
@@ -39,7 +39,7 @@
 
     <rect x="200" y="26" width="60" height="194" fill="url(#mem0Gradient)" rx="6" filter="url(#shadow)"/>
     <text x="230" y="130" text-anchor="middle" font-size="11" font-weight="600" fill="white">286K</text>
-    <text x="230" y="245" text-anchor="middle" font-size="12" font-weight="600" fill="#FF5722">Mem0</text>
+    <text x="230" y="245" text-anchor="middle" font-size="12" font-weight="600" fill="#FF5722">mem0</text>
 
     <g transform="translate(290, 80)">
       <rect x="0" y="0" width="70" height="50" fill="#E8F5E9" rx="8" stroke="#4CAF50" stroke-width="2"/>
@@ -111,7 +111,7 @@
     <g transform="translate(220, 0)">
       <line x1="0" y1="0" x2="20" y2="0" stroke="#FF5722" stroke-width="3"/>
       <circle cx="10" cy="0" r="4" fill="#FF5722"/>
-      <text x="28" y="4" font-size="11" fill="#333">Mem0 (平均 28.6K/轮)</text>
+      <text x="28" y="4" font-size="11" fill="#333">mem0 (平均 28.6K/轮)</text>
     </g>
   </g>
 

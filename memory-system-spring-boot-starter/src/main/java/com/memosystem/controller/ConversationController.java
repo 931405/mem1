@@ -117,7 +117,7 @@ public class ConversationController {
     public Result<VersionInfoVO> getVersion() {
         VersionInfoVO info = new VersionInfoVO(
                 "1.0.0",
-                "Mem0-like Memory Management System",
+                "mem0-like Memory Management System",
                 "2026-01-04");
         return Result.success("版本信息获取成功", info);
     }

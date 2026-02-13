@@ -381,4 +381,4 @@ Apache 2.0 - 详见 [LICENSE.md](LICENSE.md) 文件。
 
 ## 致谢
 
-本项目为源项目[Mem0 Python 实现](https://github.com/mem0ai/mem0) 的Java开发版。
+本项目为源项目[mem0 Python 实现](https://github.com/mem0ai/mem0) 的Java开发版。

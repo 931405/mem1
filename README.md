@@ -381,4 +381,4 @@ Apache 2.0 - See [LICENSE.md](LICENSE.md) file for details.
 
 ## Acknowledgements
 
-This project is a Java development version of the original [Mem0 Python Implementation](https://github.com/mem0ai/mem0).
+This project is a Java development version of the original [mem0 Python Implementation](https://github.com/mem0ai/mem0).

@@ -25,7 +25,7 @@ public class SwaggerConfig {
                                 .info(new Info()
                                                 .title("记忆管理系统 API")
                                                 .version("1.0.0")
-                                                .description("Mem0-like 记忆管理系统 API 接口文档")
+                                                .description("mem0-like 记忆管理系统 API 接口文档")
                                                 .contact(new Contact()
                                                                 .name("开发团队")
                                                                 .url("https://github.com"))
