@@ -1,0 +1,27 @@
+<svg width="800" height="220" viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg">
+  <rect width="100%" height="100%" fill="#ffffff" rx="10" ry="10" stroke="#e1e4e8" stroke-width="1"/>
+
+  <text x="40" y="50" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="24" font-weight="bold" fill="#24292e">
+    Token 消耗对比
+  </text>
+  <text x="40" y="80" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="14" fill="#586069">
+    基于10轮对话累积 Token 消耗的平均值对比
+  </text>
+
+  <g transform="translate(40, 110)">
+    <text x="0" y="15" font-family="monospace" font-size="14" font-weight="600" fill="#586069">Mem0 (基线)</text>
+    <rect x="140" y="0" width="500" height="20" rx="4" fill="#f6f8fa"/>
+    <rect x="140" y="0" width="500" height="20" rx="4" fill="#ea4a5a"/>
+    <text x="650" y="15" font-family="monospace" font-size="14" font-weight="bold" fill="#ea4a5a">~286K Tokens</text>
+  </g>
+
+  <g transform="translate(40, 150)">
+    <text x="0" y="15" font-family="monospace" font-size="14" font-weight="600" fill="#24292e">mem1 (我们的)</text>
+    <rect x="140" y="0" width="500" height="20" rx="4" fill="#f6f8fa"/>
+    <rect x="140" y="0" width="227" height="20" rx="4" fill="#2ea44f"/>
+    <text x="377" y="15" font-family="monospace" font-size="14" font-weight="bold" fill="#2ea44f">~130K Tokens</text>
+    
+    <rect x="520" y="-5" width="120" height="30" rx="15" fill="#dafbe1" stroke="#2ea44f" stroke-width="1"/>
+    <text x="580" y="15" text-anchor="middle" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif" font-size="12" font-weight="bold" fill="#2ea44f">节省 54.5%</text>
+  </g>
+</svg>
