@@ -372,8 +372,8 @@ Result<String> result = conversationService.updateSystemContext(sessionId, userM
 
 ## Language Support
 
-- **中文**: [README.md](README.md)
-- **English**: [README_EN.md](README_EN.md) (This file)
+- **中文**: [README-ZH.md](README-ZH.md)
+- **English**: [README.md](README.md) (This file)
 
 ## License
 
