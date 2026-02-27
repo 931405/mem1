@@ -1,7 +1,9 @@
 # mem1
 
 
-
+<p align="center">
+  <img src="docs/images/logo.png" alt="mem1 logo" width="120">
+</p>
 <p align="center">
   <strong>💬 让 AI 记住每一次对话</strong>
 </p>
