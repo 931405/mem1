@@ -33,12 +33,12 @@
     <line x1="50" y1="110" x2="350" y2="110" stroke="#f0f0f0" stroke-width="1"/>
     <line x1="50" y1="55" x2="350" y2="55" stroke="#f0f0f0" stroke-width="1"/>
 
-    <rect x="80" y="125" width="60" height="95" fill="url(#mem1Gradient)" rx="6" filter="url(#shadow)"/>
-    <text x="110" y="175" text-anchor="middle" font-size="11" font-weight="600" fill="white">134K</text>
+    <rect x="80" y="146" width="60" height="74" fill="url(#mem1Gradient)" rx="6" filter="url(#shadow)"/>
+    <text x="110" y="183" text-anchor="middle" font-size="11" font-weight="600" fill="white">134K</text>
     <text x="110" y="245" text-anchor="middle" font-size="12" font-weight="600" fill="#4CAF50">mem1 ✅</text>
 
-    <rect x="200" y="10" width="60" height="210" fill="url(#mem0Gradient)" rx="6" filter="url(#shadow)"/>
-    <text x="230" y="115" text-anchor="middle" font-size="11" font-weight="600" fill="white">258K</text>
+    <rect x="200" y="78" width="60" height="142" fill="url(#mem0Gradient)" rx="6" filter="url(#shadow)"/>
+    <text x="230" y="149" text-anchor="middle" font-size="11" font-weight="600" fill="white">258K</text>
     <text x="230" y="245" text-anchor="middle" font-size="12" font-weight="600" fill="#FF5722">mem0</text>
 
     <g transform="translate(290, 80)">
@@ -78,30 +78,30 @@
     <text x="235" y="258" text-anchor="middle" font-size="10" fill="#999">对话轮次</text>
 
     <polyline fill="none" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
-      points="50,195 91,179 132,177 173,172 214,165 255,170 296,158 337,141 378,174 419,173"/>
-    <circle cx="50" cy="195" r="5" fill="#4CAF50"/>
-    <circle cx="91" cy="179" r="5" fill="#4CAF50"/>
-    <circle cx="132" cy="177" r="5" fill="#4CAF50"/>
-    <circle cx="173" cy="172" r="5" fill="#4CAF50"/>
-    <circle cx="214" cy="165" r="5" fill="#4CAF50"/>
-    <circle cx="255" cy="170" r="5" fill="#4CAF50"/>
-    <circle cx="296" cy="158" r="5" fill="#4CAF50"/>
-    <circle cx="337" cy="141" r="5" fill="#4CAF50"/>
-    <circle cx="378" cy="174" r="5" fill="#4CAF50"/>
-    <circle cx="419" cy="173" r="5" fill="#4CAF50"/>
+      points="50,175 91,159 132,157 173,151 214,144 255,149 296,136 337,119 378,153 419,152"/>
+    <circle cx="50" cy="175" r="5" fill="#4CAF50"/>
+    <circle cx="91" cy="159" r="5" fill="#4CAF50"/>
+    <circle cx="132" cy="157" r="5" fill="#4CAF50"/>
+    <circle cx="173" cy="151" r="5" fill="#4CAF50"/>
+    <circle cx="214" cy="144" r="5" fill="#4CAF50"/>
+    <circle cx="255" cy="149" r="5" fill="#4CAF50"/>
+    <circle cx="296" cy="136" r="5" fill="#4CAF50"/>
+    <circle cx="337" cy="119" r="5" fill="#4CAF50"/>
+    <circle cx="378" cy="153" r="5" fill="#4CAF50"/>
+    <circle cx="419" cy="152" r="5" fill="#4CAF50"/>
 
     <polyline fill="none" stroke="#FF5722" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
-      points="50,85 91,137 132,119 173,107 214,116 255,98 296,126 337,61 378,106 419,111"/>
-    <circle cx="50" cy="85" r="5" fill="#FF5722"/>
-    <circle cx="91" cy="137" r="5" fill="#FF5722"/>
-    <circle cx="132" cy="119" r="5" fill="#FF5722"/>
-    <circle cx="173" cy="107" r="5" fill="#FF5722"/>
-    <circle cx="214" cy="116" r="5" fill="#FF5722"/>
-    <circle cx="255" cy="98" r="5" fill="#FF5722"/>
-    <circle cx="296" cy="126" r="5" fill="#FF5722"/>
-    <circle cx="337" cy="61" r="5" fill="#FF5722"/>
-    <circle cx="378" cy="106" r="5" fill="#FF5722"/>
-    <circle cx="419" cy="111" r="5" fill="#FF5722"/>
+      points="50,82 91,115 132,95 173,83 214,92 255,73 296,103 337,37 378,81 419,87"/>
+    <circle cx="50" cy="82" r="5" fill="#FF5722"/>
+    <circle cx="91" cy="115" r="5" fill="#FF5722"/>
+    <circle cx="132" cy="95" r="5" fill="#FF5722"/>
+    <circle cx="173" cy="83" r="5" fill="#FF5722"/>
+    <circle cx="214" cy="92" r="5" fill="#FF5722"/>
+    <circle cx="255" cy="73" r="5" fill="#FF5722"/>
+    <circle cx="296" cy="103" r="5" fill="#FF5722"/>
+    <circle cx="337" cy="37" r="5" fill="#FF5722"/>
+    <circle cx="378" cy="81" r="5" fill="#FF5722"/>
+    <circle cx="419" cy="87" r="5" fill="#FF5722"/>
 
     <g transform="translate(60, 0)">
       <line x1="0" y1="0" x2="20" y2="0" stroke="#4CAF50" stroke-width="3"/>
