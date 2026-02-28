@@ -15,7 +15,7 @@
 
   <!-- 标题 -->
   <text x="450" y="30" text-anchor="middle" font-size="20" font-weight="600" fill="#1a1a1a">📊 Token 消耗对比：mem1 vs mem0</text>
-  <text x="450" y="52" text-anchor="middle" font-size="13" fill="#666">10轮对话平均消耗（5次测试均值）</text>
+  <text x="450" y="52" text-anchor="middle" font-size="13" fill="#666">10 轮对话 5 次测试平均值</text>
 
   <!-- 左侧：柱状图 -->
   <g transform="translate(50, 80)">
@@ -33,18 +33,18 @@
     <line x1="50" y1="110" x2="350" y2="110" stroke="#f0f0f0" stroke-width="1"/>
     <line x1="50" y1="55" x2="350" y2="55" stroke="#f0f0f0" stroke-width="1"/>
 
-    <rect x="80" y="132" width="60" height="88" fill="url(#mem1Gradient)" rx="6" filter="url(#shadow)"/>
-    <text x="110" y="180" text-anchor="middle" font-size="11" font-weight="600" fill="white">127K</text>
+    <rect x="80" y="125" width="60" height="95" fill="url(#mem1Gradient)" rx="6" filter="url(#shadow)"/>
+    <text x="110" y="175" text-anchor="middle" font-size="11" font-weight="600" fill="white">134K</text>
     <text x="110" y="245" text-anchor="middle" font-size="12" font-weight="600" fill="#4CAF50">mem1 ✅</text>
 
-    <rect x="200" y="18" width="60" height="202" fill="url(#mem0Gradient)" rx="6" filter="url(#shadow)"/>
-    <text x="230" y="120" text-anchor="middle" font-size="11" font-weight="600" fill="white">305K</text>
+    <rect x="200" y="10" width="60" height="210" fill="url(#mem0Gradient)" rx="6" filter="url(#shadow)"/>
+    <text x="230" y="115" text-anchor="middle" font-size="11" font-weight="600" fill="white">258K</text>
     <text x="230" y="245" text-anchor="middle" font-size="12" font-weight="600" fill="#FF5722">mem0</text>
 
     <g transform="translate(290, 80)">
       <rect x="0" y="0" width="70" height="50" fill="#E8F5E9" rx="8" stroke="#4CAF50" stroke-width="2"/>
       <text x="35" y="20" text-anchor="middle" font-size="11" fill="#2E7D32" font-weight="600">节省</text>
-      <text x="35" y="40" text-anchor="middle" font-size="16" fill="#4CAF50" font-weight="700">58.2%</text>
+      <text x="35" y="40" text-anchor="middle" font-size="16" fill="#4CAF50" font-weight="700">47.9%</text>
     </g>
   </g>
 
@@ -78,40 +78,40 @@
     <text x="235" y="258" text-anchor="middle" font-size="10" fill="#999">对话轮次</text>
 
     <polyline fill="none" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
-      points="50,198 91,177 132,188 173,190 214,184 255,143 296,144 337,132 378,184 419,190"/>
-    <circle cx="50" cy="198" r="5" fill="#4CAF50"/>
-    <circle cx="91" cy="177" r="5" fill="#4CAF50"/>
-    <circle cx="132" cy="188" r="5" fill="#4CAF50"/>
-    <circle cx="173" cy="190" r="5" fill="#4CAF50"/>
-    <circle cx="214" cy="184" r="5" fill="#4CAF50"/>
-    <circle cx="255" cy="143" r="5" fill="#4CAF50"/>
-    <circle cx="296" cy="144" r="5" fill="#4CAF50"/>
-    <circle cx="337" cy="132" r="5" fill="#4CAF50"/>
-    <circle cx="378" cy="184" r="5" fill="#4CAF50"/>
-    <circle cx="419" cy="190" r="5" fill="#4CAF50"/>
+      points="50,195 91,179 132,177 173,172 214,165 255,170 296,158 337,141 378,174 419,173"/>
+    <circle cx="50" cy="195" r="5" fill="#4CAF50"/>
+    <circle cx="91" cy="179" r="5" fill="#4CAF50"/>
+    <circle cx="132" cy="177" r="5" fill="#4CAF50"/>
+    <circle cx="173" cy="172" r="5" fill="#4CAF50"/>
+    <circle cx="214" cy="165" r="5" fill="#4CAF50"/>
+    <circle cx="255" cy="170" r="5" fill="#4CAF50"/>
+    <circle cx="296" cy="158" r="5" fill="#4CAF50"/>
+    <circle cx="337" cy="141" r="5" fill="#4CAF50"/>
+    <circle cx="378" cy="174" r="5" fill="#4CAF50"/>
+    <circle cx="419" cy="173" r="5" fill="#4CAF50"/>
 
     <polyline fill="none" stroke="#FF5722" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
-      points="50,75 91,118 132,83 173,97 214,94 255,95 296,118 337,19 378,50 419,37"/>
-    <circle cx="50" cy="75" r="5" fill="#FF5722"/>
-    <circle cx="91" cy="118" r="5" fill="#FF5722"/>
-    <circle cx="132" cy="83" r="5" fill="#FF5722"/>
-    <circle cx="173" cy="97" r="5" fill="#FF5722"/>
-    <circle cx="214" cy="94" r="5" fill="#FF5722"/>
-    <circle cx="255" cy="95" r="5" fill="#FF5722"/>
-    <circle cx="296" cy="118" r="5" fill="#FF5722"/>
-    <circle cx="337" cy="19" r="5" fill="#FF5722"/>
-    <circle cx="378" cy="50" r="5" fill="#FF5722"/>
-    <circle cx="419" cy="37" r="5" fill="#FF5722"/>
+      points="50,85 91,137 132,119 173,107 214,116 255,98 296,126 337,61 378,106 419,111"/>
+    <circle cx="50" cy="85" r="5" fill="#FF5722"/>
+    <circle cx="91" cy="137" r="5" fill="#FF5722"/>
+    <circle cx="132" cy="119" r="5" fill="#FF5722"/>
+    <circle cx="173" cy="107" r="5" fill="#FF5722"/>
+    <circle cx="214" cy="116" r="5" fill="#FF5722"/>
+    <circle cx="255" cy="98" r="5" fill="#FF5722"/>
+    <circle cx="296" cy="126" r="5" fill="#FF5722"/>
+    <circle cx="337" cy="61" r="5" fill="#FF5722"/>
+    <circle cx="378" cy="106" r="5" fill="#FF5722"/>
+    <circle cx="419" cy="111" r="5" fill="#FF5722"/>
 
     <g transform="translate(60, 0)">
       <line x1="0" y1="0" x2="20" y2="0" stroke="#4CAF50" stroke-width="3"/>
       <circle cx="10" cy="0" r="4" fill="#4CAF50"/>
-      <text x="28" y="4" font-size="11" fill="#333">mem1 (平均 12.7K/轮)</text>
+      <text x="28" y="4" font-size="11" fill="#333">mem1 (平均 13.4K/轮)</text>
     </g>
     <g transform="translate(220, 0)">
       <line x1="0" y1="0" x2="20" y2="0" stroke="#FF5722" stroke-width="3"/>
       <circle cx="10" cy="0" r="4" fill="#FF5722"/>
-      <text x="28" y="4" font-size="11" fill="#333">mem0 (平均 30.5K/轮)</text>
+      <text x="28" y="4" font-size="11" fill="#333">mem0 (平均 25.8K/轮)</text>
     </g>
   </g>
 
@@ -122,33 +122,33 @@
     <text x="400" y="25" text-anchor="middle" font-size="14" font-weight="600" fill="#333">📈 关键指标汇总</text>
 
     <g transform="translate(40, 50)">
-      <text x="0" y="0" font-size="11" fill="#666">10轮总消耗</text>
-      <text x="0" y="25" font-size="18" font-weight="700" fill="#4CAF50">130,013</text>
-      <text x="0" y="42" font-size="10" fill="#999">vs 285,612</text>
+      <text x="0" y="0" font-size="11" fill="#666">10 轮总消耗</text>
+      <text x="0" y="25" font-size="18" font-weight="700" fill="#4CAF50">134,196</text>
+      <text x="0" y="42" font-size="10" fill="#999">vs 257,747</text>
     </g>
 
     <g transform="translate(180, 50)">
       <text x="0" y="0" font-size="11" fill="#666">单轮平均</text>
-      <text x="0" y="25" font-size="18" font-weight="700" fill="#4CAF50">13,001</text>
-      <text x="0" y="42" font-size="10" fill="#999">vs 28,561</text>
+      <text x="0" y="25" font-size="18" font-weight="700" fill="#4CAF50">13,420</text>
+      <text x="0" y="42" font-size="10" fill="#999">vs 25,775</text>
     </g>
 
     <g transform="translate(320, 50)">
       <text x="0" y="0" font-size="11" fill="#666">单轮峰值</text>
-      <text x="0" y="25" font-size="18" font-weight="700" fill="#4CAF50">19,931</text>
-      <text x="0" y="42" font-size="10" fill="#999">vs 40,512</text>
+      <text x="0" y="25" font-size="18" font-weight="700" fill="#4CAF50">19,324</text>
+      <text x="0" y="42" font-size="10" fill="#999">vs 34,942</text>
     </g>
 
     <g transform="translate(460, 50)">
       <text x="0" y="0" font-size="11" fill="#666">单轮最低</text>
-      <text x="0" y="25" font-size="18" font-weight="700" fill="#4CAF50">8,137</text>
-      <text x="0" y="42" font-size="10" fill="#999">vs 16,528</text>
+      <text x="0" y="25" font-size="18" font-weight="700" fill="#4CAF50">8,632</text>
+      <text x="0" y="42" font-size="10" fill="#999">vs 20,067</text>
     </g>
 
     <g transform="translate(620, 35)">
       <rect x="0" y="0" width="140" height="55" fill="#4CAF50" rx="10"/>
       <text x="70" y="22" text-anchor="middle" font-size="12" fill="white" font-weight="600">平均节省</text>
-      <text x="70" y="45" text-anchor="middle" font-size="24" fill="white" font-weight="700">54.5%</text>
+      <text x="70" y="45" text-anchor="middle" font-size="24" fill="white" font-weight="700">47.9%</text>
     </g>
   </g>
 
