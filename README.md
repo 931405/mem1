@@ -74,6 +74,9 @@ Compared to other competitors, mem1 has significant advantages in the following 
 ### Prerequisites
 
 - Java 21
+
+> 📌 **Note**: If you need JDK version < 21 compatibility support, please contact the author.
+
 - Maven 3.9
 
 ### Installation
