@@ -33,18 +33,18 @@
     <line x1="50" y1="110" x2="350" y2="110" stroke="#f0f0f0" stroke-width="1"/>
     <line x1="50" y1="55" x2="350" y2="55" stroke="#f0f0f0" stroke-width="1"/>
 
-    <rect x="80" y="138" width="60" height="82" fill="url(#mem1Gradient)" rx="6" filter="url(#shadow)"/>
-    <text x="110" y="185" text-anchor="middle" font-size="11" font-weight="600" fill="white">130K</text>
+    <rect x="80" y="132" width="60" height="88" fill="url(#mem1Gradient)" rx="6" filter="url(#shadow)"/>
+    <text x="110" y="180" text-anchor="middle" font-size="11" font-weight="600" fill="white">127K</text>
     <text x="110" y="245" text-anchor="middle" font-size="12" font-weight="600" fill="#4CAF50">mem1 ✅</text>
 
-    <rect x="200" y="26" width="60" height="194" fill="url(#mem0Gradient)" rx="6" filter="url(#shadow)"/>
-    <text x="230" y="130" text-anchor="middle" font-size="11" font-weight="600" fill="white">286K</text>
+    <rect x="200" y="18" width="60" height="202" fill="url(#mem0Gradient)" rx="6" filter="url(#shadow)"/>
+    <text x="230" y="120" text-anchor="middle" font-size="11" font-weight="600" fill="white">305K</text>
     <text x="230" y="245" text-anchor="middle" font-size="12" font-weight="600" fill="#FF5722">mem0</text>
 
     <g transform="translate(290, 80)">
       <rect x="0" y="0" width="70" height="50" fill="#E8F5E9" rx="8" stroke="#4CAF50" stroke-width="2"/>
       <text x="35" y="20" text-anchor="middle" font-size="11" fill="#2E7D32" font-weight="600">Save</text>
-      <text x="35" y="40" text-anchor="middle" font-size="16" fill="#4CAF50" font-weight="700">54.5%</text>
+      <text x="35" y="40" text-anchor="middle" font-size="16" fill="#4CAF50" font-weight="700">58.2%</text>
     </g>
   </g>
 
@@ -78,40 +78,40 @@
     <text x="235" y="258" text-anchor="middle" font-size="10" fill="#999">Dialogue Turn</text>
 
     <polyline fill="none" stroke="#4CAF50" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
-      points="50,186 91,170 132,169 173,162 214,155 255,159 296,145 337,130 378,163 419,171"/>
-    <circle cx="50" cy="186" r="5" fill="#4CAF50"/>
-    <circle cx="91" cy="170" r="5" fill="#4CAF50"/>
-    <circle cx="132" cy="169" r="5" fill="#4CAF50"/>
-    <circle cx="173" cy="162" r="5" fill="#4CAF50"/>
-    <circle cx="214" cy="155" r="5" fill="#4CAF50"/>
-    <circle cx="255" cy="159" r="5" fill="#4CAF50"/>
-    <circle cx="296" cy="145" r="5" fill="#4CAF50"/>
-    <circle cx="337" cy="130" r="5" fill="#4CAF50"/>
-    <circle cx="378" cy="163" r="5" fill="#4CAF50"/>
-    <circle cx="419" cy="171" r="5" fill="#4CAF50"/>
+      points="50,198 91,177 132,188 173,190 214,184 255,143 296,144 337,132 378,184 419,190"/>
+    <circle cx="50" cy="198" r="5" fill="#4CAF50"/>
+    <circle cx="91" cy="177" r="5" fill="#4CAF50"/>
+    <circle cx="132" cy="188" r="5" fill="#4CAF50"/>
+    <circle cx="173" cy="190" r="5" fill="#4CAF50"/>
+    <circle cx="214" cy="184" r="5" fill="#4CAF50"/>
+    <circle cx="255" cy="143" r="5" fill="#4CAF50"/>
+    <circle cx="296" cy="144" r="5" fill="#4CAF50"/>
+    <circle cx="337" cy="132" r="5" fill="#4CAF50"/>
+    <circle cx="378" cy="184" r="5" fill="#4CAF50"/>
+    <circle cx="419" cy="190" r="5" fill="#4CAF50"/>
 
     <polyline fill="none" stroke="#FF5722" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"
-      points="50,138 91,160 132,148 173,140 214,145 255,130 296,151 337,94 378,135 419,145"/>
-    <circle cx="50" cy="138" r="5" fill="#FF5722"/>
-    <circle cx="91" cy="160" r="5" fill="#FF5722"/>
-    <circle cx="132" cy="148" r="5" fill="#FF5722"/>
-    <circle cx="173" cy="140" r="5" fill="#FF5722"/>
-    <circle cx="214" cy="145" r="5" fill="#FF5722"/>
-    <circle cx="255" cy="130" r="5" fill="#FF5722"/>
-    <circle cx="296" cy="151" r="5" fill="#FF5722"/>
-    <circle cx="337" cy="94" r="5" fill="#FF5722"/>
-    <circle cx="378" cy="135" r="5" fill="#FF5722"/>
-    <circle cx="419" cy="145" r="5" fill="#FF5722"/>
+      points="50,75 91,118 132,83 173,97 214,94 255,95 296,118 337,19 378,50 419,37"/>
+    <circle cx="50" cy="75" r="5" fill="#FF5722"/>
+    <circle cx="91" cy="118" r="5" fill="#FF5722"/>
+    <circle cx="132" cy="83" r="5" fill="#FF5722"/>
+    <circle cx="173" cy="97" r="5" fill="#FF5722"/>
+    <circle cx="214" cy="94" r="5" fill="#FF5722"/>
+    <circle cx="255" cy="95" r="5" fill="#FF5722"/>
+    <circle cx="296" cy="118" r="5" fill="#FF5722"/>
+    <circle cx="337" cy="19" r="5" fill="#FF5722"/>
+    <circle cx="378" cy="50" r="5" fill="#FF5722"/>
+    <circle cx="419" cy="37" r="5" fill="#FF5722"/>
 
     <g transform="translate(60, 0)">
       <line x1="0" y1="0" x2="20" y2="0" stroke="#4CAF50" stroke-width="3"/>
       <circle cx="10" cy="0" r="4" fill="#4CAF50"/>
-      <text x="28" y="4" font-size="11" fill="#333">mem1 (avg 13K/turn)</text>
+      <text x="28" y="4" font-size="11" fill="#333">mem1 (avg 12.7K/turn)</text>
     </g>
     <g transform="translate(220, 0)">
       <line x1="0" y1="0" x2="20" y2="0" stroke="#FF5722" stroke-width="3"/>
       <circle cx="10" cy="0" r="4" fill="#FF5722"/>
-      <text x="28" y="4" font-size="11" fill="#333">mem0 (avg 28.6K/turn)</text>
+      <text x="28" y="4" font-size="11" fill="#333">mem0 (avg 30.5K/turn)</text>
     </g>
   </g>
 
@@ -123,14 +123,14 @@
 
     <g transform="translate(40, 50)">
       <text x="0" y="0" font-size="11" fill="#666">Total (10 turns)</text>
-      <text x="0" y="25" font-size="18" font-weight="700" fill="#4CAF50">130,013</text>
-      <text x="0" y="42" font-size="10" fill="#999">vs 285,612</text>
+      <text x="0" y="25" font-size="18" font-weight="700" fill="#4CAF50">127,193</text>
+      <text x="0" y="42" font-size="10" fill="#999">vs 304,650</text>
     </g>
 
     <g transform="translate(180, 50)">
       <text x="0" y="0" font-size="11" fill="#666">Avg per turn</text>
-      <text x="0" y="25" font-size="18" font-weight="700" fill="#4CAF50">13,001</text>
-      <text x="0" y="42" font-size="10" fill="#999">vs 28,561</text>
+      <text x="0" y="25" font-size="18" font-weight="700" fill="#4CAF50">12,719</text>
+      <text x="0" y="42" font-size="10" fill="#999">vs 30,465</text>
     </g>
 
     <g transform="translate(320, 50)">
@@ -142,13 +142,13 @@
     <g transform="translate(460, 50)">
       <text x="0" y="0" font-size="11" fill="#666">Min per turn</text>
       <text x="0" y="25" font-size="18" font-weight="700" fill="#4CAF50">8,137</text>
-      <text x="0" y="42" font-size="10" fill="#999">vs 16,528</text>
+      <text x="0" y="42" font-size="10" fill="#999">vs 22,680</text>
     </g>
 
     <g transform="translate(620, 35)">
       <rect x="0" y="0" width="140" height="55" fill="#4CAF50" rx="10"/>
       <text x="70" y="22" text-anchor="middle" font-size="12" fill="white" font-weight="600">Avg Savings</text>
-      <text x="70" y="45" text-anchor="middle" font-size="24" fill="white" font-weight="700">54.5%</text>
+      <text x="70" y="45" text-anchor="middle" font-size="24" fill="white" font-weight="700">58.2%</text>
     </g>
   </g>
 
